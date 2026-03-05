@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter/material.dart';
+import '../../features/capsules/presentation/capsules_screen.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -7,11 +7,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const Scaffold(
-          body: Center(
-            child: Text('Главный экран'),
-          ),
-        ),
+        builder: (context, state) => const CapsulesScreen(),
       ),
     ],
   );
