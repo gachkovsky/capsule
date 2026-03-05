@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets/capsule_card.dart';
@@ -42,7 +43,7 @@ class CapsulesScreen extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+  onPressed: () => context.go('/create'),
         backgroundColor: const Color(0xFF8B5CF6),
         child: const Icon(Icons.add, color: Colors.white),
       ),
