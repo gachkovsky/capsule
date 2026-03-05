@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
+import 'core/router/app_router.dart';
 
 void main() {
   runApp(
@@ -15,15 +16,11 @@ class CapsuleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Capsule',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
-      home: const Scaffold(
-        body: Center(
-          child: Text('Capsule 🕰️'),
-        ),
-      ),
+      routerConfig: AppRouter.router,
     );
   }
 }
