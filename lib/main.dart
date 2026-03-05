@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/theme/app_theme.dart';
 
 void main() {
   runApp(
@@ -17,10 +18,7 @@ class CapsuleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Capsule',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.dark,
       home: const Scaffold(
         body: Center(
           child: Text('Capsule 🕰️'),
