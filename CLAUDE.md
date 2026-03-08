@@ -36,6 +36,19 @@ lib/
 - All strings in English in code, UI can be Russian
 - No print() — use debugPrint()
 
+## Progress
+
+### Done
+- Dark purple theme
+- go_router navigation
+- Capsules screen with mock data (3 capsules)
+- Capsule card widget
+- Create capsule screen with date picker
+
+### Next
+- Supabase integration: auth (sign up / sign in)
+- Supabase integration: save and load capsules
+
 ## Commands
 - Run: flutter run
 - Build APK: flutter build apk --release
