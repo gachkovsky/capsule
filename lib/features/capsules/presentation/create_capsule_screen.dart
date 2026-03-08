@@ -67,93 +67,102 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
       appBar: AppBar(
         title: const Text('Новая капсула'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Твоё сообщение',
-              style: TextStyle(
-                color: AppTheme.textSecondary,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _messageController,
-              maxLines: 6,
-              style: const TextStyle(color: AppTheme.textPrimary),
-              onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(
-                hintText: 'Напиши что-то себе в будущее...',
-                hintStyle: const TextStyle(color: AppTheme.textSecondary),
-                filled: true,
-                fillColor: AppTheme.card,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Дата открытия',
-              style: TextStyle(
-                color: AppTheme.textSecondary,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: _pickDate,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.card,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_today,
-                      color: AppTheme.primary,
-                      size: 20,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Твоё сообщение',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 14,
                     ),
-                    const SizedBox(width: 12),
-                    Text(
-                      _selectedDate == null
-                          ? 'Выбери дату'
-                          : '${_selectedDate!.day}.${_selectedDate!.month}.${_selectedDate!.year}',
-                      style: TextStyle(
-                        color: _selectedDate == null
-                            ? AppTheme.textSecondary
-                            : AppTheme.textPrimary,
-                        fontSize: 16,
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: _messageController,
+                    maxLines: 6,
+                    style: const TextStyle(color: AppTheme.textPrimary),
+                    onChanged: (_) => setState(() {}),
+                    decoration: InputDecoration(
+                      hintText: 'Напиши что-то себе в будущее...',
+                      hintStyle:
+                          const TextStyle(color: AppTheme.textSecondary),
+                      filled: true,
+                      fillColor: AppTheme.card,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Дата открытия',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: _pickDate,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppTheme.card,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.calendar_today,
+                            color: AppTheme.primary,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            _selectedDate == null
+                                ? 'Выбери дату'
+                                : '${_selectedDate!.day}.${_selectedDate!.month}.${_selectedDate!.year}',
+                            style: TextStyle(
+                              color: _selectedDate == null
+                                  ? AppTheme.textSecondary
+                                  : AppTheme.textPrimary,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (_error != null) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      _error!,
+                      style: const TextStyle(
+                          color: Colors.redAccent, fontSize: 13),
+                    ),
                   ],
-                ),
+                ],
               ),
             ),
-            if (_error != null) ...[
-              const SizedBox(height: 16),
-              Text(
-                _error!,
-                style: const TextStyle(color: Colors.redAccent, fontSize: 13),
-              ),
-            ],
-            const Spacer(),
-            if (_isLoading)
-              const Center(child: CircularProgressIndicator())
-            else
-              SwipeToSeal(
-                enabled: canSave,
-                onSwiped: _save,
-              ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SwipeToSeal(
+                    enabled: canSave,
+                    onSwiped: _save,
+                  ),
+          ),
+        ],
       ),
     );
   }

@@ -64,7 +64,7 @@ class _SwipeToSealState extends State<SwipeToSeal>
       });
       HapticFeedback.heavyImpact();
       _playSound();
-      widget.onSwiped();
+      Future.delayed(const Duration(milliseconds: 700), widget.onSwiped);
     } else {
       _snapBack();
     }
@@ -89,7 +89,11 @@ class _SwipeToSealState extends State<SwipeToSeal>
   }
 
   Future<void> _playSound() async {
-    await _audioPlayer.play(AssetSource('sounds/seal.mp3'));
+    try {
+      await _audioPlayer.play(AssetSource('sounds/seal.mp3'));
+    } catch (e) {
+      debugPrint('Sound error: $e');
+    }
   }
 
   @override
