@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../shared/widgets/swipe_to_seal.dart';
+import 'providers/capsules_provider.dart';
 
 class CreateCapsuleScreen extends ConsumerStatefulWidget {
   const CreateCapsuleScreen({super.key});
@@ -13,6 +16,8 @@ class CreateCapsuleScreen extends ConsumerStatefulWidget {
 class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
   final _messageController = TextEditingController();
   DateTime? _selectedDate;
+  bool _isLoading = false;
+  String? _error;
 
   @override
   void dispose() {
@@ -32,8 +37,32 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
     }
   }
 
+  Future<void> _save() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      await ref.read(capsulesRepositoryProvider).createCapsule(
+            message: _messageController.text.trim(),
+            openAt: _selectedDate!,
+          );
+      ref.invalidate(capsulesProvider);
+      if (mounted) context.go('/');
+    } catch (e) {
+      setState(() => _error = 'Не удалось сохранить. Попробуй ещё раз.');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final canSave = _selectedDate != null &&
+        _messageController.text.isNotEmpty &&
+        !_isLoading;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Новая капсула'),
@@ -55,10 +84,10 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
               controller: _messageController,
               maxLines: 6,
               style: const TextStyle(color: AppTheme.textPrimary),
+              onChanged: (_) => setState(() {}),
               decoration: InputDecoration(
                 hintText: 'Напиши что-то себе в будущее...',
-                hintStyle:
-                    const TextStyle(color: AppTheme.textSecondary),
+                hintStyle: const TextStyle(color: AppTheme.textSecondary),
                 filled: true,
                 fillColor: AppTheme.card,
                 border: OutlineInputBorder(
@@ -108,34 +137,21 @@ class _CreateCapsuleScreenState extends ConsumerState<CreateCapsuleScreen> {
                 ),
               ),
             ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _selectedDate == null ||
-                        _messageController.text.isEmpty
-                    ? null
-                    : () {
-                        // TODO: сохранить в Supabase
-                        Navigator.pop(context);
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Запечатать капсулу 🔒',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+            if (_error != null) ...[
+              const SizedBox(height: 16),
+              Text(
+                _error!,
+                style: const TextStyle(color: Colors.redAccent, fontSize: 13),
               ),
-            ),
+            ],
+            const Spacer(),
+            if (_isLoading)
+              const Center(child: CircularProgressIndicator())
+            else
+              SwipeToSeal(
+                enabled: canSave,
+                onSwiped: _save,
+              ),
           ],
         ),
       ),

@@ -1,3 +1,7 @@
+# Project-specific
+CLAUDE.md
+lib/core/supabase_config.dart
+
 # Miscellaneous
 *.class
 *.log
