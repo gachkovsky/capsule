@@ -63,6 +63,7 @@ class CapsulesScreen extends ConsumerWidget {
                   message: capsule.message,
                   openDate: capsule.openAt,
                   isOpened: capsule.isOpened,
+                  onTap: () => context.push('/capsule/${capsule.id}', extra: capsule),
                 );
               },
             ),

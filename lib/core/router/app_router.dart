@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/capsules/presentation/capsules_screen.dart';
 import '../../features/capsules/presentation/create_capsule_screen.dart';
+import '../../features/capsules/presentation/capsule_detail_screen.dart';
+import '../../features/capsules/domain/capsule.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 
 class AppRouter {
@@ -34,6 +36,13 @@ class AppRouter {
         GoRoute(
           path: '/create',
           builder: (context, state) => const CreateCapsuleScreen(),
+        ),
+        GoRoute(
+          path: '/capsule/:id',
+          builder: (context, state) {
+            final capsule = state.extra as Capsule;
+            return CapsuleDetailScreen(capsule: capsule);
+          },
         ),
       ],
     );

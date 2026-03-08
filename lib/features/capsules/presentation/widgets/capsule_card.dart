@@ -5,19 +5,26 @@ class CapsuleCard extends StatelessWidget {
   final String message;
   final DateTime openDate;
   final bool isOpened;
+  final VoidCallback? onTap;
 
   const CapsuleCard({
     super.key,
     required this.message,
     required this.openDate,
     required this.isOpened,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final daysLeft = openDate.difference(DateTime.now()).inDays;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final openDay = DateTime(openDate.year, openDate.month, openDate.day);
+    final daysLeft = openDay.difference(today).inDays;
 
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -74,6 +81,7 @@ class CapsuleCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
